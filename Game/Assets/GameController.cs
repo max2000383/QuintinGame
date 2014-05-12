@@ -3,7 +3,11 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 	public GameObject NorthSpawn;
+	public GameObject NorthEastSpawn;
+	public GameObject NorthWestSpawn;
 	public GameObject SouthSpawn;
+	public GameObject SouthEastSpawn;
+	public GameObject SouthWestSpawn;
 	public GameObject EastSpawn;
 	public GameObject WestSpawn;
 	public Transform RedObstacle;
@@ -23,7 +27,7 @@ public class GameController : MonoBehaviour {
 		*/
 		ObstacleFrequency=1.5f;
 		for(int j=0;j<200;j++){
-			for(int k=0;k<4;k++)ObstacleSource[j,k]=Random.Range(0,2);
+			for(int k=0;k<8;k++)ObstacleSource[j,k]=Random.Range(0,2);
 
 		}
 	}
@@ -34,8 +38,8 @@ public class GameController : MonoBehaviour {
 		if(counter>=ObstacleFrequency){
 			counter=0;
 			//Debug.Log(Random.Range (0,2));
-			for(int i=0;i<=3;i++){
-				if(ObstacleSource[ObstacleNumber,i]==1)SpawnObstacle(i,Random.Range(1,4));
+			for(int i=0;i<=7;i++){
+				if(ObstacleSource[ObstacleNumber,i]==1)SpawnObstacle(i+1,Random.Range(1,4));
 			}
 				ObstacleNumber++;
 			
@@ -66,13 +70,25 @@ public class GameController : MonoBehaviour {
 				Instantiate(toSpawn, NorthSpawn.transform.position, Quaternion.identity);
 				break;
 			case 2:
-				Instantiate(toSpawn, EastSpawn.transform.position, Quaternion.identity);
+				Instantiate(toSpawn, NorthEastSpawn.transform.position, Quaternion.identity);
 				break;
 			case 3:
+				Instantiate(toSpawn, EastSpawn.transform.position, Quaternion.identity);
+				break;
+			case 4:
+				Instantiate(toSpawn, SouthEastSpawn.transform.position, Quaternion.identity);
+				break;
+			case 5:
 				Instantiate(toSpawn, SouthSpawn.transform.position, Quaternion.identity);
 				break;
-			case 0:
+			case 6:
+				Instantiate(toSpawn, SouthWestSpawn.transform.position, Quaternion.identity);
+				break;
+			case 7:
 				Instantiate(toSpawn, WestSpawn.transform.position, Quaternion.identity);
+				break;
+			case 8:
+				Instantiate(toSpawn, NorthWestSpawn.transform.position, Quaternion.identity);
 				break;
 		}
 	}
