@@ -48,6 +48,9 @@
   <ItemGroup>
      <Compile Include="Assets\GameController.cs" />
      <Compile Include="Assets\ObstacleScript.cs" />
+     <Compile Include="Assets\Scripts\OrbDestroyer.cs" />
+     <Compile Include="Assets\Scripts\OrbMovement.cs" />
+     <Compile Include="Assets\Scripts\OrbSpawnControl.cs" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
   </ItemGroup>
   <ItemGroup>
