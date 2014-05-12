@@ -13,8 +13,8 @@
 *.Trashes
  
 # All platforms:
-Game/Library
-Game/Temp
+Game\Library
+Game\Temp
 *.csproj
 *.pidb
 *.unityproj
