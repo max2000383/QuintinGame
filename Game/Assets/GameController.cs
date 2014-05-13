@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour {
 	public float ObstacleFrequency;
 	public int ObstacleNumber=0;
 	public float counter=0;
+	public float testOne;
+	public int testTwo;
 	// Use this for initialization
 	void Start () {
 		/*
@@ -163,14 +165,16 @@ public class GameController : MonoBehaviour {
 		
 	}
 	void updateRed(){
-		int count=0;
+		float count=0;
 		foreach (GameObject orb in redOrbs){
 			if(!CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected())CollectedRedOrbs.Add(orb);
 		}
 		foreach (GameObject orb in CollectedRedOrbs){
 			count++;
-			orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/redOrbs.Count);
-
+			testOne=count;
+			testTwo=redOrbs.Count;
+			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedRedOrbs.Count));
+			//orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedRedOrbs.Count);
 		}
 	}	
 }

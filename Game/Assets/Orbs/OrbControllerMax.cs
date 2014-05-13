@@ -3,11 +3,12 @@ using System.Collections;
 
 public class OrbControllerMax : MonoBehaviour {
 	public float speed;
+	public float moveSpeed;
 	public bool collected;
 	public int color;
 	GameObject orbCameraTarget;
 	GameObject orbLeftTarget;
-	Vector3 destination;
+	public Vector3 destination;
 	Vector3 beginning;
 
 	// Use this for initialization
@@ -16,10 +17,11 @@ public class OrbControllerMax : MonoBehaviour {
 		//orbLeftTarget = GameObject.FindGameObjectWithTag ("OrbLeftTarget");
 		collected = false;
 		speed=1;
+		moveSpeed=1;
 		destination=gameObject.transform.position;
 		beginning=destination;
 	}
-	void setDestination(Vector3 toSet){
+	public void setDestination(Vector3 toSet){
 		destination=toSet;
 
 	}
@@ -31,10 +33,11 @@ public class OrbControllerMax : MonoBehaviour {
 		if(collected){
 			Debug.Log("found orb");
 			//GameController.addOrb(gameObject);
-			if(Vector3.Distance(destination,gameObject.transform.position)>1)Vector3.Lerp(beginning,destination,0.5f);
+			beginning=transform.position;
+			if(Vector3.Distance(destination,gameObject.transform.position)>0.25f)transform.position=Vector3.Lerp(beginning,destination,0.5f*Time.deltaTime*moveSpeed);
 
 		}
-		transform.position=new Vector3(transform.position.x,Time.deltaTime*speed+transform.position.y,transform.position.z);
+		else transform.position=new Vector3(transform.position.x,Time.deltaTime*speed+transform.position.y,transform.position.z);
 		
 		//if(transform.position.y>6)Destroy(gameObject);
 		if(transform.position.y>5)collected=true;
