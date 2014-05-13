@@ -10,9 +10,11 @@ public class GameController : MonoBehaviour {
 	public GameObject SouthWestSpawn;
 	public GameObject EastSpawn;
 	public GameObject WestSpawn;
+	public GameObject ObstacleSpawnLocation;
 	public Transform RedObstacle;
 	public Transform BlueObstacle;
 	public Transform YellowObstacle;
+	public Transform Orb;
 	public int[,] ObstacleSource=new int[200,8];
 	public float ObstacleFrequency;
 	public int ObstacleNumber=0;
@@ -31,7 +33,10 @@ public class GameController : MonoBehaviour {
 
 		}
 	}
-	
+	void AddOrb(GameObject theOrb){
+		//adds an orb to the array of distributed orbs.
+
+	}
 	// Update is called once per frame
 	void Update () {
 		counter+=Time.deltaTime;
@@ -49,22 +54,56 @@ public class GameController : MonoBehaviour {
 	}
 	void SpawnObstacle(int position,int type){
 		Transform toSpawn;
+		GameObject Spawned;
+		Vector3 spawnPosition=ObstacleSpawnLocation.transform.position;
 		Debug.Log("SpawnEnemy");
 		switch (type)
 		{
 		case 1:
 			toSpawn=RedObstacle;
+			Spawned = Instantiate(toSpawn, spawnPosition, Quaternion.identity) as GameObject;
+			//redOrb.renderer.material.color = Color.red;
 			break;
 		case 2:
 			toSpawn=BlueObstacle;
+			Spawned = Instantiate(toSpawn, spawnPosition, Quaternion.identity) as GameObject;
 			break;
 		case 3:
 			toSpawn=YellowObstacle;
+			Spawned = Instantiate(toSpawn, spawnPosition, Quaternion.identity) as GameObject;
 			break;
 		default:
 			toSpawn=RedObstacle;
+			Spawned = Instantiate(toSpawn, spawnPosition, Quaternion.identity) as GameObject;
 			break;
 		}
+		switch(position){
+			case 1:
+				Spawned.transform.position=NorthSpawn.transform.position;
+				break;
+			case 2:
+				Spawned.transform.position=NorthEastSpawn.transform.position;
+				break;
+			case 3:
+				Spawned.transform.position=EastSpawn.transform.position;
+				break;
+			case 4:
+				Spawned.transform.position=SouthEastSpawn.transform.position;
+				break;
+			case 5:
+				Spawned.transform.position=SouthSpawn.transform.position;
+				break;
+			case 6:
+				Spawned.transform.position=SouthWestSpawn.transform.position;
+				break;
+			case 7:
+				Spawned.transform.position=WestSpawn.transform.position;
+				break;
+			case 8:
+				Spawned.transform.position=NorthWestSpawn.transform.position;
+				break;
+		}
+		/*
 		switch(position){
 			case 1:
 				Instantiate(toSpawn, NorthSpawn.transform.position, Quaternion.identity);
@@ -91,5 +130,6 @@ public class GameController : MonoBehaviour {
 				Instantiate(toSpawn, NorthWestSpawn.transform.position, Quaternion.identity);
 				break;
 		}
+		*/ 
 	}
 }

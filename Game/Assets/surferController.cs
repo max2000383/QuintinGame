@@ -33,11 +33,11 @@ public class surferController : MonoBehaviour {
 			rigidbody.AddForce(new Vector3(force, 0.0f, 0.0f)*100);
 		}
 		if (Input.GetKeyUp(KeyCode.UpArrow)){
-			rigidbody.AddForce(new Vector3(0.0f, force, 0.0f)*100);
+			rigidbody.AddForce(new Vector3(0.0f, 0.0f,force)*100);
 			
 		}
 		if (Input.GetKeyUp(KeyCode.DownArrow)){
-			rigidbody.AddForce(new Vector3(0.0f, -force, 0.0f)*100);
+			rigidbody.AddForce(new Vector3(0.0f, 0.0f, -force)*100);
 		}
 	}
 }
