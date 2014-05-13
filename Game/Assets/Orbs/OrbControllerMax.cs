@@ -5,19 +5,22 @@ public class OrbControllerMax : MonoBehaviour {
 	public float speed;
 	public float moveSpeed;
 	public bool collected;
+	public bool hitMarker;
 	public int color;
 	GameObject orbCameraTarget;
 	GameObject orbLeftTarget;
 	public Vector3 destination;
 	Vector3 beginning;
+	Vector3 initialDestination;
 
 	// Use this for initialization
 	void Start () {
 		//orbCameraTarget = GameObject.FindGameObjectWithTag ("OrbCameraTarget");
 		//orbLeftTarget = GameObject.FindGameObjectWithTag ("OrbLeftTarget");
 		collected = false;
+		hitMarker=false;
 		speed=1;
-		moveSpeed=1;
+		moveSpeed=4;
 		destination=gameObject.transform.position;
 		beginning=destination;
 	}
@@ -25,12 +28,16 @@ public class OrbControllerMax : MonoBehaviour {
 		destination=toSet;
 
 	}
+	public void setInitialDestination(Vector3 toSet){
+		initialDestination=toSet;
+		
+	}
 	public bool isCollected(){
 		return collected;
 	}
 	// Update is called once per frame
 	void Update () {
-		if(collected){
+		if(collected||hitMarker){
 			Debug.Log("found orb");
 			//GameController.addOrb(gameObject);
 			beginning=transform.position;
@@ -40,7 +47,11 @@ public class OrbControllerMax : MonoBehaviour {
 		else transform.position=new Vector3(transform.position.x,Time.deltaTime*speed+transform.position.y,transform.position.z);
 		
 		//if(transform.position.y>6)Destroy(gameObject);
-		if(transform.position.y>5)collected=true;
+		if(transform.position.y>5&&!hitMarker){
+			hitMarker=true;
+			destination=initialDestination;
+		}//replace this with collided. I don't trust it. Collided, that is.
+		if(Vector3.Distance(transform.position,initialDestination)<0.25)collected=true;
 		/*
 		if (!collected) {
 			if (Vector3.Distance (gameObject.transform.position, orbCameraTarget.transform.position) < 1.2)
