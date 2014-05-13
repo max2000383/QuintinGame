@@ -50,6 +50,8 @@
      <Compile Include="Assets\ObstacleScript.cs" />
      <Compile Include="Assets\Orbs\OrbController.cs" />
      <Compile Include="Assets\Orbs\OrbSpawnControl.cs" />
+     <Compile Include="Assets\Orbs\OrbTestSpawner.cs" />
+     <Compile Include="Assets\PlayerControlTest.cs" />
      <Compile Include="Assets\surferController.cs" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
