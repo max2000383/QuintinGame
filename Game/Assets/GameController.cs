@@ -55,6 +55,7 @@ public class GameController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+		if(checkAll())updateAll();
 		counter+=Time.deltaTime;
 		if(counter>=ObstacleFrequency){
 			counter=0;
@@ -70,10 +71,7 @@ public class GameController : MonoBehaviour {
 	}
 	void SpawnObstacle(int position,int type){
 		Transform toSpawn;
-		updateRed();
-		updateBlue();
-		updateYellow ();
-		updateGreen ();
+
 
 		Vector3 spawnPosition=ObstacleSpawnLocation.transform.position;
 		Debug.Log("SpawnEnemy");
@@ -122,27 +120,27 @@ public class GameController : MonoBehaviour {
 			switch(c){
 				case 1:
 					setColor=Color.blue;
-					orbb.GetComponent<OrbControllerMax>().setInitialDestination(Vector3.Lerp(OrbTopLeft.transform.position,OrbTopRight.transform.position,0.5f));
+					//orbb.GetComponent<OrbControllerMax>().setInitialDestination(Vector3.Lerp(OrbTopLeft.transform.position,OrbTopRight.transform.position,0.5f));
 					blueOrbs.Add(orbb);
-					updateBlue();
+					//updateBlue();
 					break;
 				case 0:
 					setColor=Color.red;
-					orbb.GetComponent<OrbControllerMax>().setInitialDestination(Vector3.Lerp(OrbTopLeft.transform.position,OrbBotLeft.transform.position,0.5f));
+					//orbb.GetComponent<OrbControllerMax>().setInitialDestination(Vector3.Lerp(OrbTopLeft.transform.position,OrbBotLeft.transform.position,0.5f));
 					redOrbs.Add(orbb);
-					updateRed();
+					//updateRed();
 					break;
 				case 2:
 					setColor=Color.yellow;
-					orbb.GetComponent<OrbControllerMax>().setInitialDestination(Vector3.Lerp(OrbTopRight.transform.position,OrbBotRight.transform.position,0.5f));
+					//orbb.GetComponent<OrbControllerMax>().setInitialDestination(Vector3.Lerp(OrbTopRight.transform.position,OrbBotRight.transform.position,0.5f));
 					yellowOrbs.Add(orbb);
-					updateYellow();
+					//updateYellow();
 					break;
 				case 3:
 					setColor=Color.green;
-					orbb.GetComponent<OrbControllerMax>().setInitialDestination(Vector3.Lerp(OrbBotRight.transform.position,OrbBotLeft.transform.position,0.5f));
+					//orbb.GetComponent<OrbControllerMax>().setInitialDestination(Vector3.Lerp(OrbBotRight.transform.position,OrbBotLeft.transform.position,0.5f));
 					greenOrbs.Add(orbb);
-					updateGreen();
+					//updateGreen();
 					break;
 				
 				
@@ -155,6 +153,12 @@ public class GameController : MonoBehaviour {
 			Spawned = Instantiate(RedObstacle, spawnPosition, Quaternion.identity) as GameObject;
 			break;
 		}
+		/*
+		updateRed();
+		updateBlue();
+		updateYellow();
+		updateGreen();
+		*/
 		Vector3 test;
 
 		/*
@@ -186,6 +190,36 @@ public class GameController : MonoBehaviour {
 		}
 		*/ 
 	}
+	public bool checkAll(){
+		foreach (GameObject orb in redOrbs){
+			if(!CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
+				return true;
+			}
+		}
+		foreach (GameObject orb in blueOrbs){
+			if(!CollectedBlueOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
+				return true;
+			}
+		}
+		foreach (GameObject orb in yellowOrbs){
+			if(!CollectedYellowOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
+				return true;
+			}
+		}
+		foreach (GameObject orb in greenOrbs){
+			if(!CollectedGreenOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
+				return true;
+			}
+		}
+		return false;
+
+	}
+	public void updateAll(){
+		updateRed();
+		updateBlue();
+		updateYellow();
+		updateGreen();
+	}
 	int decideColor(){
 		return Random.Range (0,4);
 		//return 3;
@@ -201,9 +235,8 @@ public class GameController : MonoBehaviour {
 		}
 		foreach (GameObject orb in CollectedRedOrbs){
 			count++;
-			testOne=count;
-			testTwo=redOrbs.Count;
-			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedRedOrbs.Count));
+			Debug.Log (count+" "+CollectedRedOrbs.Count);
+			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbTopLeft.transform.position,OrbBotLeft.transform.position,count/(CollectedRedOrbs.Count+1)));
 			//orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedRedOrbs.Count);
 		}
 	}
@@ -219,7 +252,7 @@ public class GameController : MonoBehaviour {
 			count++;
 			testOne=count;
 			testTwo=redOrbs.Count;
-			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbTopRight.transform.position,OrbTopLeft.transform.position,count/CollectedBlueOrbs.Count));
+			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbTopRight.transform.position,OrbTopLeft.transform.position,count/(CollectedBlueOrbs.Count+1)));
 			//orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedBlueOrbs.Count);
 		}
 	}
@@ -235,7 +268,7 @@ public class GameController : MonoBehaviour {
 			count++;
 			testOne=count;
 			testTwo=redOrbs.Count;
-			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbBotRight.transform.position,OrbTopRight.transform.position,count/CollectedYellowOrbs.Count));
+			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbBotRight.transform.position,OrbTopRight.transform.position,count/(CollectedYellowOrbs.Count+1)));
 			//orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedYellowOrbs.Count);
 		}
 	}
@@ -251,7 +284,7 @@ public class GameController : MonoBehaviour {
 			count++;
 			testOne=count;
 			testTwo=redOrbs.Count;
-			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbBotLeft.transform.position,OrbBotRight.transform.position,count/CollectedGreenOrbs.Count));
+			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbBotLeft.transform.position,OrbBotRight.transform.position,count/(CollectedGreenOrbs.Count+1)));
 			//orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedGreenOrbs.Count);
 		}
 	}	
