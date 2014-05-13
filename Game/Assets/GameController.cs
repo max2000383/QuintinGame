@@ -11,10 +11,16 @@ public class GameController : MonoBehaviour {
 	public GameObject EastSpawn;
 	public GameObject WestSpawn;
 	public GameObject ObstacleSpawnLocation;
-	public Transform RedObstacle;
-	public Transform BlueObstacle;
-	public Transform YellowObstacle;
-	public Transform Orb;
+	public GameObject RedObstacle;
+	public GameObject BlueObstacle;
+	public GameObject YellowObstacle;
+	public GameObject Orb;
+	public GameObject OrbTopLeft;
+	public GameObject OrbBotLeft;
+	public GameObject OrbTopRight;
+	public GameObject OrbBotRight;
+
+	//public GameObject Spawned;
 	public int[,] ObstacleSource=new int[200,8];
 	public float ObstacleFrequency;
 	public int ObstacleNumber=0;
@@ -54,55 +60,72 @@ public class GameController : MonoBehaviour {
 	}
 	void SpawnObstacle(int position,int type){
 		Transform toSpawn;
-		GameObject Spawned;
+
 		Vector3 spawnPosition=ObstacleSpawnLocation.transform.position;
 		Debug.Log("SpawnEnemy");
+		switch(position){
+		case 1:
+			spawnPosition=NorthSpawn.transform.position;
+
+			break;
+		case 2:
+			spawnPosition=NorthEastSpawn.transform.position;
+			//Spawned.transform.position=test;
+			break;
+		case 3:
+			spawnPosition=EastSpawn.transform.position;
+			break;
+		case 4:
+			spawnPosition=SouthEastSpawn.transform.position;
+			break;
+		case 5:
+			spawnPosition=SouthSpawn.transform.position;
+			break;
+		case 6:
+			spawnPosition=SouthWestSpawn.transform.position;
+			break;
+		case 7:
+			spawnPosition=WestSpawn.transform.position;
+			break;
+		case 8:
+			spawnPosition=NorthWestSpawn.transform.position;
+			break;
+		}
 		switch (type)
 		{
 		case 1:
-			toSpawn=RedObstacle;
-			Spawned = Instantiate(toSpawn, spawnPosition, Quaternion.identity) as GameObject;
-			//redOrb.renderer.material.color = Color.red;
+			//toSpawn=RedObstacle;
+			GameObject Spawned = Instantiate(RedObstacle, spawnPosition, Quaternion.identity) as GameObject;
 			break;
 		case 2:
-			toSpawn=BlueObstacle;
-			Spawned = Instantiate(toSpawn, spawnPosition, Quaternion.identity) as GameObject;
+			//toSpawn=BlueObstacle;
+			Spawned = Instantiate(BlueObstacle, spawnPosition, Quaternion.identity) as GameObject;
 			break;
 		case 3:
-			toSpawn=YellowObstacle;
-			Spawned = Instantiate(toSpawn, spawnPosition, Quaternion.identity) as GameObject;
+			GameObject orbb = Instantiate(Orb, spawnPosition, Quaternion.identity) as GameObject;
+			int c=decideColor();
+			Color setColor=Color.blue;
+			switch(c){
+				case 1:
+					setColor=Color.blue;
+					break;
+				case 0:
+					setColor=Color.red;
+					//redOrbs.add(orbb);
+					break;
+
+
+			}
+			orbb.renderer.material.color = setColor;
+
 			break;
 		default:
-			toSpawn=RedObstacle;
-			Spawned = Instantiate(toSpawn, spawnPosition, Quaternion.identity) as GameObject;
+			//toSpawn=RedObstacle;
+			Spawned = Instantiate(RedObstacle, spawnPosition, Quaternion.identity) as GameObject;
 			break;
 		}
-		switch(position){
-			case 1:
-				Spawned.transform.position=NorthSpawn.transform.position;
-				break;
-			case 2:
-				Spawned.transform.position=NorthEastSpawn.transform.position;
-				break;
-			case 3:
-				Spawned.transform.position=EastSpawn.transform.position;
-				break;
-			case 4:
-				Spawned.transform.position=SouthEastSpawn.transform.position;
-				break;
-			case 5:
-				Spawned.transform.position=SouthSpawn.transform.position;
-				break;
-			case 6:
-				Spawned.transform.position=SouthWestSpawn.transform.position;
-				break;
-			case 7:
-				Spawned.transform.position=WestSpawn.transform.position;
-				break;
-			case 8:
-				Spawned.transform.position=NorthWestSpawn.transform.position;
-				break;
-		}
+		Vector3 test;
+
 		/*
 		switch(position){
 			case 1:
@@ -131,5 +154,9 @@ public class GameController : MonoBehaviour {
 				break;
 		}
 		*/ 
+	}
+	int decideColor(){
+		return 0;
+		
 	}
 }
