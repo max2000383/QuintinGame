@@ -23,6 +23,9 @@ public class OrbControllerMax : MonoBehaviour {
 		destination=toSet;
 
 	}
+	public bool isCollected(){
+		return collected;
+	}
 	// Update is called once per frame
 	void Update () {
 		if(collected){

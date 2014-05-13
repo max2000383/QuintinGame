@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 	public GameObject NorthSpawn;
@@ -19,7 +20,8 @@ public class GameController : MonoBehaviour {
 	public GameObject OrbBotLeft;
 	public GameObject OrbTopRight;
 	public GameObject OrbBotRight;
-
+	List<GameObject> redOrbs = new List<GameObject>();
+	public List<GameObject> CollectedRedOrbs = new List<GameObject>();
 	//public GameObject Spawned;
 	public int[,] ObstacleSource=new int[200,8];
 	public float ObstacleFrequency;
@@ -111,7 +113,8 @@ public class GameController : MonoBehaviour {
 					break;
 				case 0:
 					setColor=Color.red;
-					//redOrbs.add(orbb);
+					redOrbs.Add(orbb);
+					updateRed();
 					break;
 
 
@@ -159,4 +162,15 @@ public class GameController : MonoBehaviour {
 		return 0;
 		
 	}
+	void updateRed(){
+		int count=0;
+		foreach (GameObject orb in redOrbs){
+			if(!CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected())CollectedRedOrbs.Add(orb);
+		}
+		foreach (GameObject orb in CollectedRedOrbs){
+			count++;
+			orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/redOrbs.Count);
+
+		}
+	}	
 }
