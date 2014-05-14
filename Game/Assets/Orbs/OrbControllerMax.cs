@@ -57,7 +57,7 @@ public class OrbControllerMax : MonoBehaviour {
 			else destroyMe();
 		}
 		else if(collected||hitMarker||clicked){
-			Debug.Log("found orb");
+			//Debug.Log("found orb");
 			//GameController.addOrb(gameObject);
 			beginning=transform.position;
 			if(Vector3.Distance(destination,gameObject.transform.position)>0.01f)transform.position=Vector3.Lerp(beginning,destination,0.5f*Time.deltaTime*moveSpeed);

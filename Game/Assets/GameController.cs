@@ -78,12 +78,16 @@ public class GameController : MonoBehaviour {
 
 		for(int j=0;j<7;j++)for(int k=0;k<13;k++)newObstacle[j,k]=newObstacle[j+1,k];//moves everything up.
 
-		//for(int k=0;k<13;k++)newObstacle[0,k]; generic test thing goes here.
+		for(int k=0;k<13;k++)newObstacle[0,k]=Random.Range(-2,2); //generic test thing goes here.
 		//so, you basically generate these things eight times in advance.
 
 		//check here for past "make this in three lines" things.
 
-
+		// -1 means not an orb -2 means not a obstacle.
+		//0 means has nothing
+		//1 means red
+		//2 means blue
+		//3 means 
 
 		//code goes here to make a new last line.
 
@@ -97,7 +101,7 @@ public class GameController : MonoBehaviour {
 		if(counter>=ObstacleFrequency){
 			counter=0;
 			for(int k=0;k<13;k++)Debug.Log (newObstacle[0,k]);
-			for(int i=0;i<13;i++)if(newObstacle[0,i]>0)SpawnObstacle(i+1,Random.Range(1,4));
+			for(int i=0;i<13;i++)if(newObstacle[0,i]>0)SpawnObstacle(i+1,Random.Range(1,5));
 			generateNewLine ();
 		}
 		/*
@@ -164,17 +168,18 @@ public class GameController : MonoBehaviour {
 			spawnPosition=Right.transform.position;
 			break;
 		}
+		GameObject Spawned;
 		switch (type)
 		{
 		case 1:
 			//toSpawn=RedObstacle;
-			GameObject Spawned = Instantiate(RedObstacle, spawnPosition, Quaternion.identity) as GameObject;
+			Spawned = Instantiate(RedObstacle, spawnPosition, Quaternion.identity) as GameObject;
 			break;
 		case 2:
 			//toSpawn=BlueObstacle;
 			Spawned = Instantiate(BlueObstacle, spawnPosition, Quaternion.identity) as GameObject;
 			break;
-		case 3:
+		case 4:
 			GameObject orbb = Instantiate(Orb, spawnPosition, Quaternion.identity) as GameObject;
 			int c=decideColor();
 			Color setColor=Color.blue;
@@ -207,7 +212,10 @@ public class GameController : MonoBehaviour {
 				
 			}
 			orbb.renderer.material.color = setColor;
-
+			break;
+		case 3:
+			//toSpawn=BlueObstacle;
+			Spawned = Instantiate(YellowObstacle, spawnPosition, Quaternion.identity) as GameObject;
 			break;
 		default:
 			//toSpawn=RedObstacle;
