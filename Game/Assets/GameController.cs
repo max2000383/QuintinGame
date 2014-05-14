@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour {
 	public GameObject BlueObstacle;
 	public GameObject YellowObstacle;
 	public GameObject Orb;
+	public int currentDifficulty;
 	public GameObject removedOrb;
 	public GameObject OrbTopLeft;
 	public GameObject OrbBotLeft;
@@ -26,6 +27,9 @@ public class GameController : MonoBehaviour {
 	public GameObject Right;
 	public GameObject Up;
 	public GameObject Down;
+	List<int[,]> Columns=new List<int[,]>();
+	List<int> ColumnDifficulty=new List<int>();
+	List<int[,]> UsableObstacles=new List<int[,]>();
 	List<GameObject> redOrbs = new List<GameObject>();
 	public List<GameObject> CollectedRedOrbs = new List<GameObject>();
 	List<GameObject> blueOrbs = new List<GameObject>();
@@ -54,12 +58,14 @@ public class GameController : MonoBehaviour {
 		*/
 		ObstacleFrequency=1.5f;
 		startTime=Time.time;
+		currentDifficulty=4;//at most 4 selections are blocked at any one time.
 		Left = GameObject.Find ("InnerWestSpawner");
 		Right = GameObject.Find ("InnerEastSpawner");
 		Up = GameObject.Find ("InnerNorthSpawner");
 		Down = GameObject.Find ("InnerSouthSpawner");
 		Home = GameObject.Find ("InnerCenterSpawner");
 		int j;
+		GenerateObstacles();//generates all possible obstacles.
 		//Debug.Log (ObstacleSource[1,1]);
 		for(j=0;j<200;j++){
 			for(int k=0;k<8;k++)ObstacleSource[j,k]=Random.Range(0,2);
@@ -70,15 +76,12 @@ public class GameController : MonoBehaviour {
 		}
 
 	}
-	void AddOrb(GameObject theOrb){
-		//adds an orb to the array of distributed orbs.
 
-	}
 	void generateNewLine(){ //generates a new line based on the current difficulty, etc.
 
 		for(int j=0;j<7;j++)for(int k=0;k<13;k++)newObstacle[j,k]=newObstacle[j+1,k];//moves everything up.
 
-		for(int k=0;k<7;k++)newObstacle[0,k]=Random.Range(-2,2); //generic test thing goes here.
+		for(int k=0;k<7;k++)newObstacle[0,k]=Random.Range(-1,5); //generic test thing goes here.
 		//change this seven to a  thirteen to reeenable middle spawning stuff
 		//zipp is a wuss
 		//so, you basically generate these things eight times in advance.
@@ -92,7 +95,41 @@ public class GameController : MonoBehaviour {
 		//3 means 
 
 		//code goes here to make a new last line.
+		if(totalDiff(0)<-1){
+			//generate and or use a list of usable difficulty things here. still need to make a "passable" check.
+			foreach (int[,] obstacle in Columns){
+				//this takes in each possible obstacle presently and checks them for validity. all good ones are added to passable obstacles.
+				if(isGood(obstacle))UsableObstacles.Add(obstacle);
 
+			}
+			//now usableobstacles is full of potential obstacles. pick one at random and add it!
+			int theIndex=Random.Range (0,UsableObstacles.Count);
+			addObstacle(UsableObstacles[theIndex]);
+
+		}
+
+	}
+	void addObstacle(int[,] addMe){
+		for(int i=0;i<8;i++){
+			for(int j=0;j<13;j++){
+				if(addMe[i,j]!=0)Debug.Log ("added one");
+				newObstacle[i,j]=addMe[i,j];
+
+			}
+
+		}
+		Debug.Log ("Next Line: "+totalDiff (1));
+
+	}
+	bool isGood(int[,] compare){
+
+		return true;
+	}
+	int totalDiff(int line){
+		//goes to given line and sums the difficulty, meaning adding anything not an orb.
+		int dCount=0;//assuming that we have three obstacles and orbs start at four.
+		for(int i=0;i<13;i++)if(newObstacle[line,i]>0&&newObstacle[line,i]<4)dCount++;
+		return dCount;
 
 	}
 	// Update is called once per frame
@@ -103,8 +140,12 @@ public class GameController : MonoBehaviour {
 		if(counter>=ObstacleFrequency){
 			counter=0;
 			for(int k=0;k<13;k++)Debug.Log (newObstacle[0,k]);
-			for(int i=0;i<13;i++)if(newObstacle[0,i]>0)SpawnObstacle(i+1,Random.Range(1,5));
-			generateNewLine ();
+			for(int i=0;i<13;i++){
+
+				if(newObstacle[0,i]>0)SpawnObstacle(i+1,newObstacle[0,i]);
+
+			}
+			generateNewLine();
 		}
 		/*
 		if(counter>=ObstacleFrequency){
@@ -436,5 +477,22 @@ public class GameController : MonoBehaviour {
 			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbBotLeft.transform.position,OrbBotRight.transform.position,count/(CollectedGreenOrbs.Count+1)));
 			//orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedGreenOrbs.Count);
 		}
-	}	
+	}
+	void GenerateObstacles(){
+		for(int i=0;i<13;i++){
+			for(int j=4;j<8;j++){
+				int[,] tempArray=new int[8,13];
+				//so here you have a nested for loop that makes all possible columns, made of whatever material.
+				//a total value lookup would be really sweet, actually. tie difficulty straight to how big the things are you're trying to squeeze in.
+				for(int k=0;k<j;k++){
+					tempArray[k,i]=1;
+				}
+				Columns.Add(tempArray);
+				ColumnDifficulty.Add(j);
+
+			}
+
+		}
+		
+	}
 }
