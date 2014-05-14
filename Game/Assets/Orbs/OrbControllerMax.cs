@@ -7,6 +7,7 @@ public class OrbControllerMax : MonoBehaviour {
 	public bool collected;
 	public bool process;
 	public bool beingDragged;
+	public GameObject player;
 	public bool hitMarker;
 	public bool clicked;
 	public int color;
@@ -27,6 +28,7 @@ public class OrbControllerMax : MonoBehaviour {
 		beingDragged=false; //make it free from destination, but not moveable.
 		speed=1;
 		process=false;
+		player = GameObject.Find ("Surfer");
 		moveSpeed=4;
 		//destination=gameObject.transform.position;
 		beginning=destination;
@@ -51,7 +53,7 @@ public class OrbControllerMax : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(process){
-			if(Vector3.Distance(destination,gameObject.transform.position)>0.1f)transform.position=Vector3.Lerp(transform.position,destination,0.5f*Time.deltaTime*moveSpeed);
+			if(Vector3.Distance(destination,gameObject.transform.position)>0.1f)transform.position=Vector3.MoveTowards(transform.position,player.transform.position,0.5f*Time.deltaTime*moveSpeed);
 			else destroyMe();
 		}
 		else if(collected||hitMarker||clicked){
