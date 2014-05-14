@@ -22,6 +22,10 @@ public class GameController : MonoBehaviour {
 	public GameObject OrbBotLeft;
 	public GameObject OrbTopRight;
 	public GameObject OrbBotRight;
+	public GameObject Left;
+	public GameObject Right;
+	public GameObject Up;
+	public GameObject Down;
 	List<GameObject> redOrbs = new List<GameObject>();
 	public List<GameObject> CollectedRedOrbs = new List<GameObject>();
 	List<GameObject> blueOrbs = new List<GameObject>();
@@ -32,6 +36,7 @@ public class GameController : MonoBehaviour {
 	public List<GameObject> CollectedGreenOrbs = new List<GameObject>();
 	//public GameObject Spawned;
 	public int[,] ObstacleSource=new int[200,8];
+	public int[,] newObstacle=new int[8,13];
 	public float ObstacleFrequency;
 	public int ObstacleNumber=0;
 	public float counter=0;
@@ -48,13 +53,40 @@ public class GameController : MonoBehaviour {
 		Instantiate(YellowObstacle, WestSpawn.transform.position, Quaternion.identity);
 		*/
 		ObstacleFrequency=1.5f;
-		for(int j=0;j<200;j++){
+		startTime=Time.time;
+		Left = GameObject.Find ("InnerWestSpawner");
+		Right = GameObject.Find ("InnerEastSpawner");
+		Up = GameObject.Find ("InnerNorthSpawner");
+		Down = GameObject.Find ("InnerSouthSpawner");
+		Home = GameObject.Find ("InnerCenterSpawner");
+		int j;
+		//Debug.Log (ObstacleSource[1,1]);
+		for(j=0;j<200;j++){
 			for(int k=0;k<8;k++)ObstacleSource[j,k]=Random.Range(0,2);
 			startTime=Time.time;
 		}
+		for(j=0;j<8;j++){
+			generateNewLine();
+		}
+
 	}
 	void AddOrb(GameObject theOrb){
 		//adds an orb to the array of distributed orbs.
+
+	}
+	void generateNewLine(){ //generates a new line based on the current difficulty, etc.
+
+		for(int j=0;j<7;j++)for(int k=0;k<13;k++)newObstacle[j,k]=newObstacle[j+1,k];//moves everything up.
+
+		//for(int k=0;k<13;k++)newObstacle[0,k]; generic test thing goes here.
+		//so, you basically generate these things eight times in advance.
+
+		//check here for past "make this in three lines" things.
+
+
+
+		//code goes here to make a new last line.
+
 
 	}
 	// Update is called once per frame
@@ -62,6 +94,13 @@ public class GameController : MonoBehaviour {
 		if(true)if(checkAll())updateAll();
 		if(checkClicked()>0)removeClick(checkClicked());
 		counter+=Time.deltaTime;
+		if(counter>=ObstacleFrequency){
+			counter=0;
+			for(int k=0;k<13;k++)Debug.Log (newObstacle[0,k]);
+			for(int i=0;i<13;i++)if(newObstacle[0,i]>0)SpawnObstacle(i+1,Random.Range(1,4));
+			generateNewLine ();
+		}
+		/*
 		if(counter>=ObstacleFrequency){
 			counter=0;
 			//Debug.Log(Random.Range (0,2));
@@ -72,6 +111,7 @@ public class GameController : MonoBehaviour {
 			
 			
 		}
+		*/
 
 	}
 	void SpawnObstacle(int position,int type){
@@ -79,7 +119,7 @@ public class GameController : MonoBehaviour {
 
 
 		Vector3 spawnPosition=ObstacleSpawnLocation.transform.position;
-		Debug.Log("SpawnEnemy");
+		//Debug.Log("SpawnEnemy");
 		switch(position){
 		case 1:
 			spawnPosition=NorthSpawn.transform.position;
@@ -106,6 +146,22 @@ public class GameController : MonoBehaviour {
 			break;
 		case 8:
 			spawnPosition=NorthWestSpawn.transform.position;
+			break;
+		//1-8 are the outside ones, 9-13 are the internal ones
+		case 9:
+			spawnPosition=Home.transform.position;
+			break;
+		case 10:
+			spawnPosition=Up.transform.position;
+			break;
+		case 11:
+			spawnPosition=Down.transform.position;
+			break;
+		case 12:
+			spawnPosition=Left.transform.position;
+			break;
+		case 13:
+			spawnPosition=Right.transform.position;
 			break;
 		}
 		switch (type)
@@ -318,7 +374,7 @@ public class GameController : MonoBehaviour {
 		}
 		foreach (GameObject orb in CollectedRedOrbs){
 			count++;
-			Debug.Log (count+" "+CollectedRedOrbs.Count);
+			//Debug.Log (count+" "+CollectedRedOrbs.Count);
 			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbTopLeft.transform.position,OrbBotLeft.transform.position,count/(CollectedRedOrbs.Count+1)));
 			//orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedRedOrbs.Count);
 		}
