@@ -5,6 +5,7 @@ public class surferController : MonoBehaviour {
 	private Vector3 direction;
 	public float force = 1.0f;
 	public float smoothTime = 0.3F;
+	public float waitTime;
 	private Vector3 velocity = Vector3.zero;
 	private Vector3 home;
 	private Vector3 left;
@@ -22,7 +23,8 @@ public class surferController : MonoBehaviour {
 	private Vector3 target;
 	private float speed;
 	private bool returnHome = false;
-	private bool outsideRing;
+	private bool fromOutsideRing;
+	private bool toOutsideRing;
 
 	
 	
@@ -40,10 +42,12 @@ public class surferController : MonoBehaviour {
 		west = GameObject.Find ("West").transform.position;
 		southEast = GameObject.Find ("SouthEast").transform.position;
 		southWest = GameObject.Find ("SouthWest").transform.position;
-		northEast = GameObject.Find ("Northeast").transform.position;
+		northEast = GameObject.Find ("NorthEast").transform.position;
 		northWest = GameObject.Find ("NorthWest").transform.position;
 		target = home;
-		outsideRing = false;
+		fromOutsideRing = false;
+		toOutsideRing = false;
+		waitTime = 2.5f;
 
 
 	}
@@ -52,7 +56,7 @@ public class surferController : MonoBehaviour {
 	void Update() {
 
 		if (returnHome) {
-			target = home;
+			TargetHome ();
 			returnHome = false;
 		}
 
@@ -72,105 +76,118 @@ public class surferController : MonoBehaviour {
 			TargetDown ();
 			}
 
-			transform.position = Vector3.Lerp (transform.position, target, Time.deltaTime);
+			transform.position = Vector3.Lerp (transform.position, target, Time.deltaTime * speed);
 				
-			//transform.position = Vector3.Slerp (transform.position, target, Time.deltaTime * speed);
+			transform.position = Vector3.Slerp (transform.position, target, Time.deltaTime * speed);
 
 	}
 
 	IEnumerator WaitCoroutine(){
-		yield return new WaitForSeconds (2);
+		yield return new WaitForSeconds (waitTime);
 		returnHome = true;
 	}
 
 	void TargetHome(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = home;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetLeft(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = left;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetRight(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = right;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetUp(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = up;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetDown(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = down;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetNorth(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = north;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetSouth(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = south;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetEast(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = east;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetWest(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = west;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetNorthEast(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = northEast;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetSouthWest(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = southWest;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetNorthWest(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = northWest;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetSouthEast(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = southEast;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
