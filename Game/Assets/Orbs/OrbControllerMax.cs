@@ -101,8 +101,25 @@ public class OrbControllerMax : MonoBehaviour {
 	}
 
 	void OnTriggerEnter (Collider trigger) {
-		Debug.Log ("Collision");
-		if (trigger.gameObject.tag == "Player")collected=collected;
-			//collected = true;
+		if(trigger.gameObject.tag == "Player")collected=collected;
+		if(trigger.gameObject.tag == "Player" && clicked){
+			string colString = "";
+			colString += "\nPlayer: " + player.transform.position.ToString();
+			colString += "\nClosest On Bounds: " + trigger.ClosestPointOnBounds(transform.position).ToString();
+			Debug.Log(colString);
+			Vector3 colPoint = trigger.ClosestPointOnBounds(transform.position);
+			Vector3 plaPoint = player.transform.position;
+			surferController s = player.GetComponent<surferController>();
+			if(!s) {
+				Debug.Log("No surferController");
+				return;
+			}
+			if(colPoint.x - plaPoint.x >= 0.4) s.hitByOrb("left");
+			else if(colPoint.x - plaPoint.x <= -0.4) s.hitByOrb("right");
+			else if(colPoint.z - plaPoint.z >= 0.4) s.hitByOrb("down");
+			else if(colPoint.z - plaPoint.x <= -0.4) s.hitByOrb("up");
+			else Debug.Log("Dafuq got hit?");
+			destroyMe();
+		}
 	}
 }

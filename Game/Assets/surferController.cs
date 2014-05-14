@@ -303,7 +303,10 @@ public class surferController : MonoBehaviour {
 			break;
 		}
 
-
+		moveUp = false;
+		moveDown = false;
+		moveLeft = false;
+		moveRight = false;
 
 				
 		if (fromOutsideRing == true && toOutsideRing == true) {
@@ -438,6 +441,12 @@ public class surferController : MonoBehaviour {
 
 	void OrbReturn(){}
 
+	public void hitByOrb(string dir){
+		if(dir.Equals("left")) moveLeft = true;
+		else if(dir.Equals("right"))moveRight = true;
+		else if(dir.Equals("down"))moveDown = true;
+		else moveUp = true;
+	}
 
 }
 
