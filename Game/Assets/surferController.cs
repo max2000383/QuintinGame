@@ -85,11 +85,11 @@ public class surferController : MonoBehaviour {
 
 		case 2://up location
 			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-				TargetUp ();
+				TargetLeft ();
 			}
 			
 			if (Input.GetKeyDown (KeyCode.RightArrow)) {
-				TargetUp ();
+				TargetRight ();
 			}
 			
 			if (Input.GetKeyDown (KeyCode.UpArrow)) {
@@ -111,21 +111,21 @@ public class surferController : MonoBehaviour {
 			}
 			
 			if (Input.GetKeyDown (KeyCode.UpArrow)) {
-				TargetRight();
+				TargetUp();
 			}
 			
 			if (Input.GetKeyDown (KeyCode.DownArrow)){
-				TargetRight ();
+				TargetDown ();
 			}
 			break;
 
 		case 4:  // down location
 			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-				TargetDown ();
+				TargetLeft ();
 			}
 			
 			if (Input.GetKeyDown (KeyCode.RightArrow)) {
-				TargetDown ();
+				TargetRight ();
 			}
 			
 			if (Input.GetKeyDown (KeyCode.UpArrow)) {
@@ -147,11 +147,11 @@ public class surferController : MonoBehaviour {
 			}
 			
 			if (Input.GetKeyDown (KeyCode.UpArrow)) {
-				TargetWest ();
+				TargetUp ();
 			}
 			
 			if (Input.GetKeyDown (KeyCode.DownArrow)){
-				TargetWest ();
+				TargetDown ();
 			}
 			break;
 
