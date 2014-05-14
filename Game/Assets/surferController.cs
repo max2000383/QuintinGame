@@ -5,6 +5,7 @@ public class surferController : MonoBehaviour {
 	private Vector3 direction;
 	public float force = 1.0f;
 	public float smoothTime = 0.3F;
+	public float waitTime;
 	private Vector3 velocity = Vector3.zero;
 	private Vector3 home;
 	private Vector3 left;
@@ -19,16 +20,18 @@ public class surferController : MonoBehaviour {
 	private Vector3 northWest;
 	private Vector3 southEast;
 	private Vector3 southWest;
+	private int location;
 	private Vector3 target;
-	private float speed;
+	public float speed;
 	private bool returnHome = false;
-	private bool outsideRing;
+	private bool fromOutsideRing;
+	private bool toOutsideRing;
 
 	
 	
 	// Use this for initialization
 	void Start () {
-		speed = 1.0f;
+		speed = 2.0f;
 		home = GameObject.Find ("Home").transform.position;
 		left = GameObject.Find ("Left").transform.position;
 		right = GameObject.Find ("Right").transform.position;
@@ -40,10 +43,13 @@ public class surferController : MonoBehaviour {
 		west = GameObject.Find ("West").transform.position;
 		southEast = GameObject.Find ("SouthEast").transform.position;
 		southWest = GameObject.Find ("SouthWest").transform.position;
-		northEast = GameObject.Find ("Northeast").transform.position;
+		northEast = GameObject.Find ("NorthEast").transform.position;
 		northWest = GameObject.Find ("NorthWest").transform.position;
 		target = home;
-		outsideRing = false;
+		location = 1;
+		fromOutsideRing = false;
+		toOutsideRing = false;
+		waitTime = 2.5f;
 
 
 	}
@@ -52,127 +58,382 @@ public class surferController : MonoBehaviour {
 	void Update() {
 
 		if (returnHome) {
-			target = home;
+			TargetHome ();
 			returnHome = false;
 		}
 
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-			TargetLeft();
+		switch(location)
+		{
+
+		case 1:  // home location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetLeft();
 			}
 
-		if (Input.GetKeyDown (KeyCode.RightArrow)) {
-			TargetRight();
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetRight();
 			}
 
-		if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			TargetUp ();
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetUp ();
 			}
 
-		if (Input.GetKeyDown (KeyCode.DownArrow)){
-			TargetDown ();
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetDown ();
 			}
+			break;
 
-			transform.position = Vector3.Lerp (transform.position, target, Time.deltaTime);
+		case 2://up location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetLeft ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetRight ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetNorth ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetHome ();
+			}
+			break;
+
+		case 3:// right location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetHome();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetEast();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetUp();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetDown ();
+			}
+			break;
+
+		case 4:  // down location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetLeft ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetRight ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetHome();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetSouth ();
+			}
+			break;
+
+		case 5: // left location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetWest();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetHome();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetUp ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetDown ();
+			}
+			break;
+
+		case 6: // north location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetNorthWest();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetNorthEast();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetNorth ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetHome();
+			}
+			break;
+
+		case 7: // northeast location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetNorth();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetEast();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetNorth ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetEast ();
+			}
+			break;
+
+		case 8: // east location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetHome();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetEast();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetNorthEast ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetSouthEast ();
+			}
+			break;
+
+		case 9:  // southeast location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetSouth();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetEast();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetEast ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetSouth ();
+			}
+			break;
+
+		case 10:  // south location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetSouthWest();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetSouthEast();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetHome ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetSouth ();
+			}
+			break;
+
+		case 11:  // southwest location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetWest();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetSouth();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetWest ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetSouth ();
+			}
+			break;
+
+		case 12: // west location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetWest();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetHome();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetNorthWest ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetSouthWest ();
+			}
+			break;
+
+		case 13: // northwest location
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				TargetWest();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				TargetNorth();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				TargetNorth ();
+			}
+			
+			if (Input.GetKeyDown (KeyCode.DownArrow)){
+				TargetWest ();
+			}
+			break;
+		}
+
+
+
 				
-			//transform.position = Vector3.Slerp (transform.position, target, Time.deltaTime * speed);
+		if (fromOutsideRing == true && toOutsideRing == true) {
+				transform.position = Vector3.Slerp (transform.position, target, Time.deltaTime * speed);
+				} else {
+				transform.position = Vector3.Lerp (transform.position, target, Time.deltaTime * speed);
+				}
 
 	}
 
 	IEnumerator WaitCoroutine(){
-		yield return new WaitForSeconds (2);
+		yield return new WaitForSeconds (waitTime);
 		returnHome = true;
 	}
 
 	void TargetHome(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = home;
+		location = 1;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetLeft(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = left;
+		location = 5;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetRight(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = right;
+		location = 3;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetUp(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = up;
+		location = 2;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetDown(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = false;
+		toOutsideRing = false;
 		target = down;
+		location = 4;
+		fromOutsideRing = false;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetNorth(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = north;
+		location = 6;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetSouth(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = south;
+		location = 10;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetEast(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = east;
+		location = 8;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetWest(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = west;
+		location = 12;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetNorthEast(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = northEast;
+		location = 7;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetSouthWest(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = southWest;
+		location = 11;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetNorthWest(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = northWest;
+		location = 13;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
 
 	void TargetSouthEast(){
 		StopCoroutine ("WaitCoroutine");
-		outsideRing = true;
+		toOutsideRing = true;
 		target = southEast;
+		location = 9;
+		fromOutsideRing = true;
 		StartCoroutine ("WaitCoroutine");
 	}
+
+	void OrbReturn(){}
 
 
 }
