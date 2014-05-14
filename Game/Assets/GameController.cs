@@ -78,7 +78,9 @@ public class GameController : MonoBehaviour {
 
 		for(int j=0;j<7;j++)for(int k=0;k<13;k++)newObstacle[j,k]=newObstacle[j+1,k];//moves everything up.
 
-		for(int k=0;k<13;k++)newObstacle[0,k]=Random.Range(-2,2); //generic test thing goes here.
+		for(int k=0;k<7;k++)newObstacle[0,k]=Random.Range(-2,2); //generic test thing goes here.
+		//change this seven to a  thirteen to reeenable middle spawning stuff
+		//zipp is a wuss
 		//so, you basically generate these things eight times in advance.
 
 		//check here for past "make this in three lines" things.
