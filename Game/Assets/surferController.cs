@@ -26,7 +26,10 @@ public class surferController : MonoBehaviour {
 	private bool returnHome = false;
 	private bool fromOutsideRing;
 	private bool toOutsideRing;
-
+	private bool moveUp;
+	private bool moveDown;
+	private bool moveLeft;
+	private bool moveRight;
 	
 	
 	// Use this for initialization
@@ -66,235 +69,235 @@ public class surferController : MonoBehaviour {
 		{
 
 		case 1:  // home location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetLeft();
 			}
 
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetRight();
 			}
 
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetUp ();
 			}
 
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetDown ();
 			}
 			break;
 
 		case 2://up location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetLeft ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetRight ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetNorth ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetHome ();
 			}
 			break;
 
 		case 3:// right location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetHome();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetEast();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetUp();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetDown ();
 			}
 			break;
 
 		case 4:  // down location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetLeft ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetRight ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetHome();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetSouth ();
 			}
 			break;
 
 		case 5: // left location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetWest();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetHome();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetUp ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetDown ();
 			}
 			break;
 
 		case 6: // north location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetNorthWest();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetNorthEast();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetNorth ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetHome();
 			}
 			break;
 
 		case 7: // northeast location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetNorth();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetEast();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetNorth ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetEast ();
 			}
 			break;
 
 		case 8: // east location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetHome();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetEast();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetNorthEast ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetSouthEast ();
 			}
 			break;
 
 		case 9:  // southeast location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetSouth();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetEast();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetEast ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetSouth ();
 			}
 			break;
 
 		case 10:  // south location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetSouthWest();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetSouthEast();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetHome ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetSouth ();
 			}
 			break;
 
 		case 11:  // southwest location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetWest();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetSouth();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetWest ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetSouth ();
 			}
 			break;
 
 		case 12: // west location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetWest();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetHome();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetNorthWest ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetSouthWest ();
 			}
 			break;
 
 		case 13: // northwest location
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || moveLeft) {
 				TargetWest();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) || moveRight) {
 				TargetNorth();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) || moveUp) {
 				TargetNorth ();
 			}
 			
-			if (Input.GetKeyDown (KeyCode.DownArrow)){
+			if (Input.GetKeyDown (KeyCode.DownArrow) || moveDown){
 				TargetWest ();
 			}
 			break;
