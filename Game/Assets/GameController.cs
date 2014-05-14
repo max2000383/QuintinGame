@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GameController : MonoBehaviour {
 	public GameObject NorthSpawn;
 	public GameObject NorthEastSpawn;
+	public GameObject Home;
 	public GameObject NorthWestSpawn;
 	public GameObject SouthSpawn;
 	public GameObject SouthEastSpawn;
@@ -16,6 +17,7 @@ public class GameController : MonoBehaviour {
 	public GameObject BlueObstacle;
 	public GameObject YellowObstacle;
 	public GameObject Orb;
+	public GameObject removedOrb;
 	public GameObject OrbTopLeft;
 	public GameObject OrbBotLeft;
 	public GameObject OrbTopRight;
@@ -34,6 +36,8 @@ public class GameController : MonoBehaviour {
 	public int ObstacleNumber=0;
 	public float counter=0;
 	public float testOne;
+	float startTime;
+
 	public int testTwo;
 	// Use this for initialization
 	void Start () {
@@ -46,7 +50,7 @@ public class GameController : MonoBehaviour {
 		ObstacleFrequency=1.5f;
 		for(int j=0;j<200;j++){
 			for(int k=0;k<8;k++)ObstacleSource[j,k]=Random.Range(0,2);
-
+			startTime=Time.time;
 		}
 	}
 	void AddOrb(GameObject theOrb){
@@ -55,7 +59,8 @@ public class GameController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if(checkAll())updateAll();
+		if(true)if(checkAll())updateAll();
+		if(checkClicked()>0)removeClick(checkClicked());
 		counter+=Time.deltaTime;
 		if(counter>=ObstacleFrequency){
 			counter=0;
@@ -190,23 +195,101 @@ public class GameController : MonoBehaviour {
 		}
 		*/ 
 	}
+	public int checkClicked(){
+
+		if(CollectedRedOrbs.Count>0)foreach (GameObject orb in CollectedRedOrbs){
+			if(CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
+				return 1;
+			}
+		}
+		if(CollectedBlueOrbs.Count>0)foreach (GameObject orb in CollectedBlueOrbs){
+			if(CollectedBlueOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
+				return 2;
+			}
+		}
+		if(CollectedYellowOrbs.Count>0)foreach (GameObject orb in CollectedYellowOrbs){
+			if(CollectedYellowOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
+				return 3;
+			}
+		}
+		if(CollectedGreenOrbs.Count>0)foreach (GameObject orb in CollectedGreenOrbs){
+			if(CollectedGreenOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
+				return 4;
+			}
+		}
+		return 0;
+	}
+	public void removeClick(int color){
+		switch(color){
+			case 1:
+				foreach(GameObject orb in CollectedRedOrbs){
+				if(CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
+					removedOrb=orb;
+
+					}
+				}
+				removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+				CollectedRedOrbs.Remove(removedOrb);
+				redOrbs.Remove(removedOrb);
+				updateRed();
+				break;
+			case 2:
+				foreach(GameObject orb in CollectedBlueOrbs){
+					if(CollectedBlueOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
+						removedOrb=orb;
+						
+					}
+				}
+				removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+				CollectedBlueOrbs.Remove(removedOrb);
+				blueOrbs.Remove(removedOrb);
+				updateBlue();
+				break;
+			case 3:
+				foreach(GameObject orb in CollectedYellowOrbs){
+					if(CollectedYellowOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
+						removedOrb=orb;
+						
+					}
+				}
+				removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+				CollectedYellowOrbs.Remove(removedOrb);
+				yellowOrbs.Remove(removedOrb);
+				updateYellow();
+				break;
+			case 4:
+				foreach(GameObject orb in CollectedGreenOrbs){
+					if(CollectedGreenOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
+						removedOrb=orb;
+						
+					}
+				}
+			removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+				CollectedGreenOrbs.Remove(removedOrb);
+				greenOrbs.Remove(removedOrb);
+				updateGreen();
+				break;
+
+		}
+
+	}
 	public bool checkAll(){
-		foreach (GameObject orb in redOrbs){
+		if(redOrbs.Count>0)foreach (GameObject orb in redOrbs){
 			if(!CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
 				return true;
 			}
 		}
-		foreach (GameObject orb in blueOrbs){
+		if(blueOrbs.Count>0)foreach (GameObject orb in blueOrbs){
 			if(!CollectedBlueOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
 				return true;
 			}
 		}
-		foreach (GameObject orb in yellowOrbs){
+		if(yellowOrbs.Count>0)foreach (GameObject orb in yellowOrbs){
 			if(!CollectedYellowOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
 				return true;
 			}
 		}
-		foreach (GameObject orb in greenOrbs){
+		if(greenOrbs.Count>0)foreach (GameObject orb in greenOrbs){
 			if(!CollectedGreenOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
 				return true;
 			}
