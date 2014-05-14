@@ -6,38 +6,46 @@ public class surferController : MonoBehaviour {
 	public float force = 1.0f;
 	public float smoothTime = 0.3F;
 	private Vector3 velocity = Vector3.zero;
-	private Vector3 home = new Vector3(0,0,0);
+	private Vector3 home;
+	private Vector3 left;
+	private Vector3 right;
+	private Vector3 up;
+	private Vector3 down;
+	private Vector3 target;
+	private float speed;
+
 	
 	
 	// Use this for initialization
 	void Start () {
-		
+		home = GameObject.Find ("Home").transform.position;
+		left = GameObject.Find ("Left").transform.position;
+		right = GameObject.Find ("Right").transform.position;
+		up = GameObject.Find ("Up").transform.position;
+		down = GameObject.Find ("Down").transform.position;
+		target = home;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		direction = Vector3.zero;
+	void Update() {
+
+		if (Input.GetKeyDown (KeyCode.LeftArrow))
+			target = left;
+
+		if (Input.GetKeyDown (KeyCode.RightArrow))
+			target = right;
+
+		if (Input.GetKeyDown (KeyCode.UpArrow))
+			target = up;
+
+		if (Input.GetKeyDown (KeyCode.DownArrow))
+			target = down;
+
+		transform.position = Vector3.Lerp (transform.position, target, Time.deltaTime);
+				
 		
-		//		if (gameObject.transform.position != Vector3.zero) {
-		//
-		//			rigidbody.AddForce(direction);
-		//				}
-		
-		//transform.position = Vector3.SmoothDamp(transform.position, Vector3.zero, ref velocity, smoothTime, 1.0f, Time.deltaTime);
-		
-		if (Input.GetKeyUp(KeyCode.LeftArrow)){
-			rigidbody.AddForce(new Vector3(-force, 0.0f, 0.0f)*100);
-		}
-		
-		if (Input.GetKeyUp(KeyCode.RightArrow)){
-			rigidbody.AddForce(new Vector3(force, 0.0f, 0.0f)*100);
-		}
-		if (Input.GetKeyUp(KeyCode.UpArrow)){
-			rigidbody.AddForce(new Vector3(0.0f, 0.0f,force)*100);
-			
-		}
-		if (Input.GetKeyUp(KeyCode.DownArrow)){
-			rigidbody.AddForce(new Vector3(0.0f, 0.0f, -force)*100);
-		}
+
 	}
+
+
 }
