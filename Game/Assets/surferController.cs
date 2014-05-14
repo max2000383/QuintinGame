@@ -13,11 +13,13 @@ public class surferController : MonoBehaviour {
 	private Vector3 down;
 	private Vector3 target;
 	private float speed;
+	private bool returnHome = false;
 
 	
 	
 	// Use this for initialization
 	void Start () {
+		speed = 1.0f;
 		home = GameObject.Find ("Home").transform.position;
 		left = GameObject.Find ("Left").transform.position;
 		right = GameObject.Find ("Right").transform.position;
@@ -29,22 +31,44 @@ public class surferController : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 
-		if (Input.GetKeyDown (KeyCode.LeftArrow))
+		if (returnHome) {
+			target = home;
+			returnHome = false;
+		}
+
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			StopCoroutine ("WaitCoroutine");
 			target = left;
+			StartCoroutine ("WaitCoroutine");
+			}
 
-		if (Input.GetKeyDown (KeyCode.RightArrow))
+		if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			StopCoroutine ("WaitCoroutine");
 			target = right;
+			StartCoroutine ("WaitCoroutine");
+			}
 
-		if (Input.GetKeyDown (KeyCode.UpArrow))
+		if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			StopCoroutine ("WaitCoroutine");
 			target = up;
+			StartCoroutine ("WaitCoroutine");
+			}
 
-		if (Input.GetKeyDown (KeyCode.DownArrow))
+		if (Input.GetKeyDown (KeyCode.DownArrow)){
+			StopCoroutine ("WaitCoroutine");
 			target = down;
-
-		transform.position = Vector3.Lerp (transform.position, target, Time.deltaTime);
+			StartCoroutine ("WaitCoroutine");
+			}
+		
+		transform.position = Vector3.Lerp (transform.position, target, Time.deltaTime * speed);
 				
 		
 
+	}
+
+	IEnumerator WaitCoroutine(){
+		yield return new WaitForSeconds (2);
+		returnHome = true;
 	}
 
 
