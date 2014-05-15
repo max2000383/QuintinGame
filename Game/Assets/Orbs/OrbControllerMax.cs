@@ -10,7 +10,9 @@ public class OrbControllerMax : MonoBehaviour {
 	public GameObject player;
 	public bool hitMarker;
 	public bool clicked;
+	public bool followCursor;
 	public int color;
+	Vector3 mousePosition;
 	//public script GameController;
 	GameObject orbCameraTarget;
 	GameObject orbLeftTarget;
@@ -24,6 +26,7 @@ public class OrbControllerMax : MonoBehaviour {
 		//orbLeftTarget = GameObject.FindGameObjectWithTag ("OrbLeftTarget");
 		collected = false;
 		hitMarker=false;
+		followCursor=false;
 		clicked=false;//misnomes, means process as a motion.
 		beingDragged=false; //make it free from destination, but not moveable.
 		speed=1;
@@ -65,7 +68,18 @@ public class OrbControllerMax : MonoBehaviour {
 
 		}
 		else transform.position=new Vector3(transform.position.x,Time.deltaTime*speed+transform.position.y,transform.position.z);
-		
+		if(followCursor){
+			mousePosition = Input.mousePosition;
+			Vector3 temp=new Vector3(mousePosition.x,mousePosition.y,(Camera.main.transform.position.z-transform.position.z));
+			mousePosition = Camera.main.ScreenToWorldPoint(temp);
+			//fuck it.
+			//destination=new Vector3(mousePosition.x,transform.position.y,mousePosition.z);
+			//destination=new Vector3(transform.position.x,transform.position.y,transform.position.z);
+			destination=new Vector3(mousePosition.x,transform.position.y,mousePosition.y);
+			beginning=transform.position;
+			if(Vector3.Distance(destination,gameObject.transform.position)>0.01f)transform.position=Vector3.Lerp(beginning,destination,0.5f*Time.deltaTime*moveSpeed);
+			//destination=mousePosition;
+		}
 		//if(transform.position.y>6)Destroy(gameObject);
 		if(transform.position.y>5&&!hitMarker&&!process){
 			hitMarker=true;
@@ -93,11 +107,33 @@ public class OrbControllerMax : MonoBehaviour {
 	void OnMouseDown(){
 		Debug.Log ("Click");
 		if(collected){
-			clicked = true;
+			collected=false;
+			followCursor=true;
+		}
+
+
+	}
+	public bool isFollowingCursor(){
+		return followCursor;
+	}
+	void OnMouseUp(){
+		if(false) //CHANGE TRUE TO "VELOCITY IS OVER THRESHOLD"
+		{
+		clicked = true;
+		followCursor=false;
+		}
+		else
+		{
+			destination=transform.position;
+			collected=true;
+			hitMarker=true;
+			followCursor=false;
+			clicked=false;
+
 		}
 	}
 	public bool isClicked(){
-		return clicked;
+		return clicked||followCursor;
 	}
 
 	void OnTriggerEnter (Collider trigger) {

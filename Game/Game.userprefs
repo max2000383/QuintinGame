@@ -1,12 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\GameController.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\surferController.cs">
     <Files>
-      <File FileName="Assets\Orbs\OrbControllerMax.cs" Line="16" Column="22" />
+      <File FileName="Assets\surferController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Orbs\OrbControllerMax.cs" Line="16" Column="23" />
       <File FileName="Assets\GameController.cs" Line="17" Column="24" />
       <File FileName="Assets\ObstacleScript.cs" Line="14" Column="3" />
-      <File FileName="Assets\surferController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Orbs\OrbSpawnControl.cs" Line="74" Column="10" />
+      <File FileName="Assets\Orbs\OrbSpawnControl.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
