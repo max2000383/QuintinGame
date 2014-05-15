@@ -154,7 +154,8 @@ public class GameController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		mousePosition=Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,5f));
+		Debug.Log(checkClicked());
+		//mousePosition=Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,5f));
 		if(true)if(checkAll())updateAll();
 		if(checkClicked()>0)removeClick(checkClicked());
 		counter+=Time.deltaTime;
@@ -345,24 +346,50 @@ public class GameController : MonoBehaviour {
 				return 4;
 			}
 		}
+		if(redOrbs.Count>0)foreach (GameObject orb in redOrbs){
+			if(orb.GetComponent<OrbControllerMax>().Clicked()){
+				return 5;
+			}
+		}
+		if(blueOrbs.Count>0)foreach (GameObject orb in blueOrbs){
+			if(orb.GetComponent<OrbControllerMax>().Clicked()){
+				return 6;
+			}
+		}
+		if(yellowOrbs.Count>0)foreach (GameObject orb in yellowOrbs){
+			if(orb.GetComponent<OrbControllerMax>().Clicked()){
+				return 7;
+			}
+		}
+		if(greenOrbs.Count>0)foreach (GameObject orb in greenOrbs){
+			if(orb.GetComponent<OrbControllerMax>().Clicked()){
+				return 8;
+			}
+		}
 		return 0;
 	}
+
 	public void removeClick(int color){
 		bool removeFlag=false;
 		switch(color){
 			case 1:
-				foreach(GameObject orb in CollectedRedOrbs){
-				if(CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
-					removedOrb=orb;
+				foreach(GameObject orb in redOrbs){
+					if(orb.GetComponent<OrbControllerMax>().Clicked()){//actual let go with acceptable velocity
+						removedOrb=Orb;//remove it from orbs later.
+						removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
 
 					}
 				}
-				if(removedOrb.GetComponent<OrbControllerMax>().clicked){
+				foreach(GameObject orb in CollectedRedOrbs){
+					if(CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isClicked()){
+						removedOrb=orb;
+					}
+				}
+				if(removedOrb.GetComponent<OrbControllerMax>().Clicked()){
 					removeFlag=true;
 					redOrbs.Remove(removedOrb);
 				}
-				CollectedRedOrbs.Remove(removedOrb);
-
+				else CollectedRedOrbs.Remove(removedOrb);
 				updateRed();
 				break;
 			case 2:
@@ -372,7 +399,7 @@ public class GameController : MonoBehaviour {
 						
 					}
 				}
-				if(removedOrb.GetComponent<OrbControllerMax>().clicked){
+				if(removedOrb.GetComponent<OrbControllerMax>().Clicked()){
 					removeFlag=true;
 					redOrbs.Remove(removedOrb);
 				}
@@ -387,7 +414,7 @@ public class GameController : MonoBehaviour {
 						
 					}
 				}
-				if(removedOrb.GetComponent<OrbControllerMax>().clicked){
+				if(removedOrb.GetComponent<OrbControllerMax>().Clicked()){
 					removeFlag=true;
 					yellowOrbs.Remove(removedOrb);
 				}
@@ -402,20 +429,50 @@ public class GameController : MonoBehaviour {
 						
 					}
 				}
-				if(removedOrb.GetComponent<OrbControllerMax>().clicked){
+				if(removedOrb.GetComponent<OrbControllerMax>().Clicked()){
 					removeFlag=true;
 					greenOrbs.Remove(removedOrb);
 				}
 				CollectedGreenOrbs.Remove(removedOrb);
-				
 				updateGreen();
 				break;
+		case 5:
+			foreach(GameObject orb in redOrbs){
+				if (orb.GetComponent<OrbControllerMax>().Clicked())removedOrb=orb;
+
+			}
+			redOrbs.Remove(removedOrb);
+			removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+			break;
+		case 6:
+			foreach(GameObject orb in blueOrbs){
+				if (orb.GetComponent<OrbControllerMax>().Clicked())removedOrb=orb;
+				
+			}
+			blueOrbs.Remove(removedOrb);
+			removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+			break;
+		case 7:
+			foreach(GameObject orb in yellowOrbs){
+				if (orb.GetComponent<OrbControllerMax>().Clicked())removedOrb=orb;
+				
+			}
+			yellowOrbs.Remove(removedOrb);
+			removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+			break;
+		case 8:
+			foreach(GameObject orb in greenOrbs){
+				if (orb.GetComponent<OrbControllerMax>().Clicked())removedOrb=orb;
+				
+			}
+			greenOrbs.Remove(removedOrb);
+			removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+			break;
+
 
 		}
-		if(removeFlag)removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
-		else {
-
-		}
+		//if(true)removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+		
 
 	}
 	public bool checkAll(){
