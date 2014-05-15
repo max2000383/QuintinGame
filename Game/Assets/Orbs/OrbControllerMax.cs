@@ -10,6 +10,7 @@ public class OrbControllerMax : MonoBehaviour {
 	public GameObject player;
 	public bool hitMarker;
 	public bool clicked;
+	public float processSpeed;
 	public bool followCursor;
 	public int color;
 	public float flickDuration;
@@ -36,6 +37,7 @@ public class OrbControllerMax : MonoBehaviour {
 		clicked=false;//misnomes, means process as a motion.
 		beingDragged=false; //make it free from destination, but not moveable.
 		speed=1;
+		processSpeed=4;
 		oldTime=false;
 		oldPosition=new Vector3(0,0,0);
 		rawVelocity=new Vector3(0,0,0);
@@ -72,6 +74,7 @@ public class OrbControllerMax : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+
 		StartCoroutine("OldPosition");
 		if(oldTime){
 			rawVelocity=transform.position-oldPosition;
@@ -80,7 +83,12 @@ public class OrbControllerMax : MonoBehaviour {
 
 		}
 		if(process){
-			if(Vector3.Distance(destination,gameObject.transform.position)>0.1f)transform.position=Vector3.MoveTowards(transform.position,player.transform.position,0.5f*Time.deltaTime*moveSpeed);
+			if(Vector3.Distance(destination,gameObject.transform.position)>0.1f){
+
+				transform.position=Vector3.Slerp(transform.position,player.transform.position,0.5f*Time.deltaTime*processSpeed);
+
+
+			}
 			//else destroyMe();
 		}
 		else if(collected||hitMarker||clicked){
@@ -144,10 +152,11 @@ public class OrbControllerMax : MonoBehaviour {
 		return followCursor;
 	}
 	void OnMouseUp(){
-		if(velocity>0.4f) //CHANGE TRUE TO "VELOCITY IS OVER THRESHOLD"
+		if(velocity>0.2f) //CHANGE TRUE TO "VELOCITY IS OVER THRESHOLD"
 		{
-			clicked = true;
-			process=true;
+			clicked=true;
+			//process=true;
+			processSpeed=velocity*20;
 			followCursor=false;
 		}
 		else
@@ -159,6 +168,9 @@ public class OrbControllerMax : MonoBehaviour {
 			clicked=false;
 
 		}
+	}
+	public bool Clicked(){
+		return clicked;
 	}
 	public bool isClicked(){
 		return clicked||followCursor;
@@ -183,7 +195,7 @@ public class OrbControllerMax : MonoBehaviour {
 			else if(colPoint.z - plaPoint.z >= 0.4) s.hitByOrb("down");
 			else if(colPoint.z - plaPoint.x <= -0.4) s.hitByOrb("up");
 			else Debug.Log("Dafuq got hit?");
-			//destroyMe();
+			destroyMe();
 		}
 	}
 }
