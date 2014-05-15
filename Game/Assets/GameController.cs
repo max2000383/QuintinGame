@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
 	public GameObject RedObstacle;
 	public GameObject BlueObstacle;
 	public GameObject YellowObstacle;
+	public Vector3 mousePosition;
 	public GameObject Orb;
 	public int currentDifficulty;
 	public GameObject removedOrb;
@@ -27,6 +28,7 @@ public class GameController : MonoBehaviour {
 	public GameObject Right;
 	public GameObject Up;
 	public GameObject Down;
+	public int orbChance;
 	List<int[,]> Columns=new List<int[,]>();
 	List<int> ColumnDifficulty=new List<int>();
 	List<int[,]> UsableObstacles=new List<int[,]>();
@@ -65,6 +67,7 @@ public class GameController : MonoBehaviour {
 		Down = GameObject.Find ("InnerSouthSpawner");
 		Home = GameObject.Find ("InnerCenterSpawner");
 		int j;
+		orbChance=5;
 		GenerateObstacles();//generates all possible obstacles.
 		//Debug.Log (ObstacleSource[1,1]);
 		for(j=0;j<200;j++){
@@ -81,7 +84,7 @@ public class GameController : MonoBehaviour {
 
 		for(int j=0;j<7;j++)for(int k=0;k<13;k++)newObstacle[j,k]=newObstacle[j+1,k];//moves everything up.
 
-		for(int k=0;k<7;k++)newObstacle[0,k]=Random.Range(-1,5); //generic test thing goes here.
+		//for(int k=0;k<7;k++)newObstacle[0,k]=Random.Range(-1,5); //generic test thing goes here.
 		//change this seven to a  thirteen to reeenable middle spawning stuff
 		//zipp is a wuss
 		//so, you basically generate these things eight times in advance.
@@ -95,7 +98,7 @@ public class GameController : MonoBehaviour {
 		//3 means 
 
 		//code goes here to make a new last line.
-		if(totalDiff(0)<-1){
+		while(totalDiff(0)<4){
 			//generate and or use a list of usable difficulty things here. still need to make a "passable" check.
 			foreach (int[,] obstacle in Columns){
 				//this takes in each possible obstacle presently and checks them for validity. all good ones are added to passable obstacles.
@@ -107,13 +110,24 @@ public class GameController : MonoBehaviour {
 			addObstacle(UsableObstacles[theIndex]);
 
 		}
+		//orb generation here.
+		for(int j=0;j<13;j++){
+			if(Random.Range(0,orbChance)==0&&newObstacle[1,j]==0)newObstacle[1,j]=4;
+			if(Random.Range(0,3)==0&&newObstacle[0,j]==4)newObstacle[1,j]=4;
+
+		}
+
 
 	}
 	void addObstacle(int[,] addMe){
+		int col=Random.Range(1,4);
 		for(int i=0;i<8;i++){
 			for(int j=0;j<13;j++){
-				if(addMe[i,j]!=0)Debug.Log ("added one");
-				newObstacle[i,j]=addMe[i,j];
+				if(addMe[i,j]!=0){
+					Debug.Log ("added one");
+					//newObstacle[i,j]=addMe[i,j];
+					newObstacle[i,j]=col;
+				}
 
 			}
 
@@ -134,6 +148,7 @@ public class GameController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+
 		if(true)if(checkAll())updateAll();
 		if(checkClicked()>0)removeClick(checkClicked());
 		counter+=Time.deltaTime;
@@ -196,7 +211,7 @@ public class GameController : MonoBehaviour {
 			break;
 		//1-8 are the outside ones, 9-13 are the internal ones
 		case 9:
-			spawnPosition=Home.transform.position;
+			//spawnPosition=Home.transform.position;
 			break;
 		case 10:
 			spawnPosition=Up.transform.position;
@@ -327,6 +342,7 @@ public class GameController : MonoBehaviour {
 		return 0;
 	}
 	public void removeClick(int color){
+		bool removeFlag=false;
 		switch(color){
 			case 1:
 				foreach(GameObject orb in CollectedRedOrbs){
@@ -335,9 +351,12 @@ public class GameController : MonoBehaviour {
 
 					}
 				}
-				removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+				if(removedOrb.GetComponent<OrbControllerMax>().clicked){
+					removeFlag=true;
+					redOrbs.Remove(removedOrb);
+				}
 				CollectedRedOrbs.Remove(removedOrb);
-				redOrbs.Remove(removedOrb);
+
 				updateRed();
 				break;
 			case 2:
@@ -347,9 +366,12 @@ public class GameController : MonoBehaviour {
 						
 					}
 				}
-				removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+				if(removedOrb.GetComponent<OrbControllerMax>().clicked){
+					removeFlag=true;
+					redOrbs.Remove(removedOrb);
+				}
 				CollectedBlueOrbs.Remove(removedOrb);
-				blueOrbs.Remove(removedOrb);
+				
 				updateBlue();
 				break;
 			case 3:
@@ -359,9 +381,12 @@ public class GameController : MonoBehaviour {
 						
 					}
 				}
-				removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+				if(removedOrb.GetComponent<OrbControllerMax>().clicked){
+					removeFlag=true;
+					yellowOrbs.Remove(removedOrb);
+				}
 				CollectedYellowOrbs.Remove(removedOrb);
-				yellowOrbs.Remove(removedOrb);
+				
 				updateYellow();
 				break;
 			case 4:
@@ -371,11 +396,18 @@ public class GameController : MonoBehaviour {
 						
 					}
 				}
-			removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+				if(removedOrb.GetComponent<OrbControllerMax>().clicked){
+					removeFlag=true;
+					greenOrbs.Remove(removedOrb);
+				}
 				CollectedGreenOrbs.Remove(removedOrb);
-				greenOrbs.Remove(removedOrb);
+				
 				updateGreen();
 				break;
+
+		}
+		if(removeFlag)removedOrb.GetComponent<OrbControllerMax>().isProcessed(Home.transform.position);
+		else {
 
 		}
 
@@ -425,6 +457,7 @@ public class GameController : MonoBehaviour {
 		}
 		foreach (GameObject orb in CollectedRedOrbs){
 			count++;
+			//if(orb.GetComponent<OrbControllerMax>().isClicked())CollectedRedOrbs.Remove(orb);
 			//Debug.Log (count+" "+CollectedRedOrbs.Count);
 			orb.GetComponent<OrbControllerMax>().setDestination(Vector3.Lerp(OrbTopLeft.transform.position,OrbBotLeft.transform.position,count/(CollectedRedOrbs.Count+1)));
 			//orb.transform.position=Vector3.Lerp(OrbBotLeft.transform.position,OrbTopLeft.transform.position,count/CollectedRedOrbs.Count);
