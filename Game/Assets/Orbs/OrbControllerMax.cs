@@ -12,6 +12,7 @@ public class OrbControllerMax : MonoBehaviour {
 	public bool clicked;
 	public bool followCursor;
 	public int color;
+	public float flickDuration;
 	Vector3 mousePosition;
 	//public script GameController;
 	GameObject orbCameraTarget;
@@ -19,6 +20,11 @@ public class OrbControllerMax : MonoBehaviour {
 	public Vector3 destination;
 	Vector3 beginning;
 	Vector3 initialDestination;
+	public Vector3 oldPosition;//used for the velocity calculation
+	Vector3 oldTemp;
+	Vector3 rawVelocity;
+	public float velocity;
+	bool oldTime;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +36,11 @@ public class OrbControllerMax : MonoBehaviour {
 		clicked=false;//misnomes, means process as a motion.
 		beingDragged=false; //make it free from destination, but not moveable.
 		speed=1;
+		oldTime=false;
+		oldPosition=new Vector3(0,0,0);
+		rawVelocity=new Vector3(0,0,0);
+		velocity=0;
+		flickDuration=0.2f;
 		process=false;
 		player = GameObject.Find ("Surfer");
 		moveSpeed=4;
@@ -53,11 +64,24 @@ public class OrbControllerMax : MonoBehaviour {
 		//beginning=transform.position;
 
 	}
+	IEnumerator OldPosition() {
+		oldTemp=transform.position;
+		yield return new WaitForSeconds(0.2f);
+		oldPosition=oldTemp;
+		oldTime=true;
+	}
 	// Update is called once per frame
 	void Update () {
+		StartCoroutine("OldPosition");
+		if(oldTime){
+			rawVelocity=transform.position-oldPosition;
+
+			velocity=Mathf.Abs(rawVelocity.x)+Mathf.Abs(rawVelocity.y);
+
+		}
 		if(process){
 			if(Vector3.Distance(destination,gameObject.transform.position)>0.1f)transform.position=Vector3.MoveTowards(transform.position,player.transform.position,0.5f*Time.deltaTime*moveSpeed);
-			else destroyMe();
+			//else destroyMe();
 		}
 		else if(collected||hitMarker||clicked){
 			//Debug.Log("found orb");
@@ -70,14 +94,17 @@ public class OrbControllerMax : MonoBehaviour {
 		else transform.position=new Vector3(transform.position.x,Time.deltaTime*speed+transform.position.y,transform.position.z);
 		if(followCursor){
 			mousePosition = Input.mousePosition;
-			Vector3 temp=new Vector3(mousePosition.x,mousePosition.y,(Camera.main.transform.position.z-transform.position.z));
+			Vector3 temp=new Vector3(mousePosition.x,mousePosition.y,8.3f);//todo fix this
+			//i don't know why this fucking works
+			//but it does.
 			mousePosition = Camera.main.ScreenToWorldPoint(temp);
 			//fuck it.
 			//destination=new Vector3(mousePosition.x,transform.position.y,mousePosition.z);
 			//destination=new Vector3(transform.position.x,transform.position.y,transform.position.z);
-			destination=new Vector3(mousePosition.x,transform.position.y,mousePosition.y);
+			destination=new Vector3(mousePosition.x,transform.position.y,mousePosition.z);
 			beginning=transform.position;
-			if(Vector3.Distance(destination,gameObject.transform.position)>0.01f)transform.position=Vector3.Lerp(beginning,destination,0.5f*Time.deltaTime*moveSpeed);
+			if(Vector3.Distance(destination,gameObject.transform.position)>0.01f)transform.position=Vector3.Lerp(beginning,destination,2f*Time.deltaTime*moveSpeed);
+
 			//destination=mousePosition;
 		}
 		//if(transform.position.y>6)Destroy(gameObject);
@@ -117,10 +144,11 @@ public class OrbControllerMax : MonoBehaviour {
 		return followCursor;
 	}
 	void OnMouseUp(){
-		if(false) //CHANGE TRUE TO "VELOCITY IS OVER THRESHOLD"
+		if(velocity>0.4f) //CHANGE TRUE TO "VELOCITY IS OVER THRESHOLD"
 		{
-		clicked = true;
-		followCursor=false;
+			clicked = true;
+			process=true;
+			followCursor=false;
 		}
 		else
 		{
@@ -155,7 +183,7 @@ public class OrbControllerMax : MonoBehaviour {
 			else if(colPoint.z - plaPoint.z >= 0.4) s.hitByOrb("down");
 			else if(colPoint.z - plaPoint.x <= -0.4) s.hitByOrb("up");
 			else Debug.Log("Dafuq got hit?");
-			destroyMe();
+			//destroyMe();
 		}
 	}
 }
