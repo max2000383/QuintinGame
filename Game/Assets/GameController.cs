@@ -77,7 +77,13 @@ public class GameController : MonoBehaviour {
 		for(j=0;j<8;j++){
 			generateNewLine();
 		}
+		StartCoroutine("Example");
 
+	}
+	IEnumerator Example() {
+		Debug.Log(Time.time);
+		yield return new WaitForSeconds(0.2f);
+		Debug.Log(Time.time);
 	}
 
 	void generateNewLine(){ //generates a new line based on the current difficulty, etc.
@@ -124,7 +130,7 @@ public class GameController : MonoBehaviour {
 		for(int i=0;i<8;i++){
 			for(int j=0;j<13;j++){
 				if(addMe[i,j]!=0){
-					Debug.Log ("added one");
+					//Debug.Log ("added one");
 					//newObstacle[i,j]=addMe[i,j];
 					newObstacle[i,j]=col;
 				}
@@ -132,7 +138,7 @@ public class GameController : MonoBehaviour {
 			}
 
 		}
-		Debug.Log ("Next Line: "+totalDiff (1));
+		//Debug.Log ("Next Line: "+totalDiff (1));
 
 	}
 	bool isGood(int[,] compare){
@@ -148,13 +154,13 @@ public class GameController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-
+		mousePosition=Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,5f));
 		if(true)if(checkAll())updateAll();
 		if(checkClicked()>0)removeClick(checkClicked());
 		counter+=Time.deltaTime;
 		if(counter>=ObstacleFrequency){
 			counter=0;
-			for(int k=0;k<13;k++)Debug.Log (newObstacle[0,k]);
+			//for(int k=0;k<13;k++)Debug.Log (newObstacle[0,k]);
 			for(int i=0;i<13;i++){
 
 				if(newObstacle[0,i]>0)SpawnObstacle(i+1,newObstacle[0,i]);

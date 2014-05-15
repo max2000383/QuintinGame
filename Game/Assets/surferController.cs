@@ -31,7 +31,10 @@ public class surferController : MonoBehaviour {
 	private bool moveLeft;
 	private bool moveRight;
 	
-	
+	void OnCollisionEnter(Collision myCol){
+		if (myCol.gameObject.tag == "orb")
+			Destroy (gameObject);
+	}
 	// Use this for initialization
 	void Start () {
 		speed = 2.0f;
