@@ -49,7 +49,7 @@
      <Compile Include="Assets\BonkedSurferControl.cs" />
      <Compile Include="Assets\GameController.cs" />
      <Compile Include="Assets\MouseClick.cs" />
-     <Compile Include="Assets\ObstacleScript.cs" />
+     <Compile Include="Assets\Obstacle\ObstacleScript.cs" />
      <Compile Include="Assets\Orbs\OrbController.cs" />
      <Compile Include="Assets\Orbs\OrbControllerMax.cs" />
      <Compile Include="Assets\Orbs\OrbSpawnControl.cs" />
