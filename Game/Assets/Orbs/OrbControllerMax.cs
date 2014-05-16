@@ -40,7 +40,7 @@ public class OrbControllerMax : MonoBehaviour {
 		processSpeed=4;
 		oldTime=false;
 		oldPosition=new Vector3(0,0,0);
-		rawVelocity=new Vector3(0,0,0);
+		rawVelocity=new Vector3(1,2,1);
 		velocity=0;
 		flickDuration=0.2f;
 		process=false;
@@ -85,7 +85,8 @@ public class OrbControllerMax : MonoBehaviour {
 		if(process){
 			if(Vector3.Distance(destination,gameObject.transform.position)>0.1f){
 
-				transform.position=Vector3.Slerp(transform.position,player.transform.position,0.5f*Time.deltaTime*processSpeed);
+				transform.position+=Vector3.Slerp(rawVelocity.normalized,(player.transform.position-transform.position).normalized,0.15f).normalized*0.25f;
+				//transform.position=Vector3.Slerp(transform.position,player.transform.position,0.5f*Time.deltaTime*processSpeed);
 
 
 			}
@@ -152,7 +153,7 @@ public class OrbControllerMax : MonoBehaviour {
 		return followCursor;
 	}
 	void OnMouseUp(){
-		if(velocity>0.2f) //CHANGE TRUE TO "VELOCITY IS OVER THRESHOLD"
+		if(velocity>0.1f) //CHANGE TRUE TO "VELOCITY IS OVER THRESHOLD"
 		{
 			clicked=true;
 			//process=true;
