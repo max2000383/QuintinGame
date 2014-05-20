@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class GameController : MonoBehaviour {
 	public GameObject NorthSpawn;
 	public GameObject NorthEastSpawn;
@@ -16,6 +17,7 @@ public class GameController : MonoBehaviour {
 	public GameObject RedObstacle;
 	public GameObject BlueObstacle;
 	public GameObject YellowObstacle;
+	public GameObject orbRing;
 	public Vector3 mousePosition;
 	public GameObject Orb;
 	public int currentDifficulty;
@@ -154,7 +156,7 @@ public class GameController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		Debug.Log(checkClicked());
+
 		//mousePosition=Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,5f));
 		if(true)if(checkAll())updateAll();
 		if(checkClicked()>0)removeClick(checkClicked());
@@ -244,7 +246,7 @@ public class GameController : MonoBehaviour {
 			//toSpawn=BlueObstacle;
 			Spawned = Instantiate(BlueObstacle, spawnPosition, Quaternion.identity) as GameObject;
 			break;
-		case 4:
+		case 6:
 			GameObject orbb = Instantiate(Orb, spawnPosition, Quaternion.identity) as GameObject;
 			int c=decideColor();
 			Color setColor=Color.blue;
@@ -276,11 +278,43 @@ public class GameController : MonoBehaviour {
 				
 				
 			}
+
 			orbb.renderer.material.color = setColor;
 			break;
 		case 3:
 			//toSpawn=BlueObstacle;
 			Spawned = Instantiate(YellowObstacle, spawnPosition, Quaternion.identity) as GameObject;
+			break;
+		case 5://this should be the kooky multiple orb thing.
+		case 4://SHOULD NEVER BE CALLED
+			Spawned = Instantiate(orbRing, spawnPosition, Quaternion.identity) as GameObject;
+			Spawned.GetComponent<RingCollect>().startup();
+			Debug.Log (Spawned.GetComponent<RingCollect>().getOrbs().Count);
+			foreach (Component location in Spawned.GetComponent<RingCollect>().getScripts()){
+				//Debug.Log(orb.GetComponent<RingOrbInstantiate>().getColorRef());
+				spawnPosition=location.gameObject.transform.position;
+				GameObject childSpawned = Instantiate(Orb, spawnPosition, Quaternion.identity) as GameObject;
+				switch(decideColor()){
+					case 0:
+
+					childSpawned.renderer.material.color=Color.red;
+					redOrbs.Add (childSpawned);
+					break;
+				case 1:
+					childSpawned.renderer.material.color=Color.blue;
+					blueOrbs.Add (childSpawned);
+					break;
+				case 2:
+					childSpawned.renderer.material.color=Color.green;
+					greenOrbs.Add (childSpawned);
+					break;
+				case 3:
+					childSpawned.renderer.material.color=Color.yellow;
+					yellowOrbs.Add (childSpawned);
+					break;
+
+				}
+			}
 			break;
 		default:
 			//toSpawn=RedObstacle;
@@ -477,6 +511,7 @@ public class GameController : MonoBehaviour {
 	}
 	public bool checkAll(){
 		if(redOrbs.Count>0)foreach (GameObject orb in redOrbs){
+			Debug.Log(orb.GetComponent<OrbControllerMax>().isCollected());
 			if(!CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
 				return true;
 			}
