@@ -14,6 +14,7 @@ public class OrbControllerMax : MonoBehaviour {
 	public bool followCursor;
 	public int color;
 	public float flickDuration;
+	public GameObject GameControl;
 	Vector3 mousePosition;
 	//public script GameController;
 	GameObject orbCameraTarget;
@@ -45,6 +46,7 @@ public class OrbControllerMax : MonoBehaviour {
 		flickDuration=0.2f;
 		process=false;
 		player = GameObject.Find ("Surfer");
+		GameControl= GameObject.Find ("GameController");
 		moveSpeed=4;
 		//destination=gameObject.transform.position;
 		beginning=destination;
