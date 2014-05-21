@@ -289,7 +289,7 @@ public class GameController : MonoBehaviour {
 		case 4://SHOULD NEVER BE CALLED
 			Spawned = Instantiate(orbRing, spawnPosition, Quaternion.identity) as GameObject;
 			Spawned.GetComponent<RingCollect>().startup();
-			Debug.Log (Spawned.GetComponent<RingCollect>().getOrbs().Count);
+//			Debug.Log (Spawned.GetComponent<RingCollect>().getOrbs().Count);
 			foreach (Component location in Spawned.GetComponent<RingCollect>().getScripts()){
 				//Debug.Log(orb.GetComponent<RingOrbInstantiate>().getColorRef());
 				spawnPosition=location.gameObject.transform.position;
@@ -511,7 +511,7 @@ public class GameController : MonoBehaviour {
 	}
 	public bool checkAll(){
 		if(redOrbs.Count>0)foreach (GameObject orb in redOrbs){
-			Debug.Log(orb.GetComponent<OrbControllerMax>().isCollected());
+//			Debug.Log(orb.GetComponent<OrbControllerMax>().isCollected());
 			if(!CollectedRedOrbs.Contains(orb)&&orb.GetComponent<OrbControllerMax>().isCollected()){
 				return true;
 			}
