@@ -46,7 +46,7 @@ public class OrbControllerMax : MonoBehaviour {
 		flickDuration=0.2f;
 		process=false;
 		player = GameObject.Find ("Surfer");
-		GameControl= GameObject.Find ("GameController");
+		//GameControl= GameObject.Find ("GameController");
 		moveSpeed=4;
 		//destination=gameObject.transform.position;
 		beginning=destination;
