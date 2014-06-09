@@ -51,6 +51,7 @@
      <Compile Include="Assets\MouseClick.cs" />
      <Compile Include="Assets\Obstacle\Lightning\BendyLightning.cs" />
      <Compile Include="Assets\Obstacle\Lightning\Emitter.cs" />
+     <Compile Include="Assets\Obstacle\ObstacleScript.cs" />
      <Compile Include="Assets\Obstacle\WarpCore.cs" />
      <Compile Include="Assets\Orbs\OrbController.cs" />
      <Compile Include="Assets\Orbs\OrbControllerMax.cs" />
@@ -58,6 +59,9 @@
      <Compile Include="Assets\Orbs\OrbTestSpawner.cs" />
      <Compile Include="Assets\RingCollect.cs" />
      <Compile Include="Assets\RingOrbInstantiate.cs" />
+     <Compile Include="Assets\SceneSpawnerLee.cs" />
+     <Compile Include="Assets\playerCollider.cs" />
+     <Compile Include="Assets\rotate.cs" />
      <Compile Include="Assets\surferController.cs" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
   </ItemGroup>

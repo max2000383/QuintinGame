@@ -448,6 +448,11 @@ public class surferController : MonoBehaviour {
 		else moveUp = true;
 	}
 
+	void OnTriggerEnter(Collider myCol){
+		if (myCol.gameObject.tag == "Obstacle")
+						Debug.Log ("You've hit an obstacle");
+	}
+
 }
 
 
